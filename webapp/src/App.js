@@ -1,21 +1,26 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import routes from './routers'
+import uuid from 'uuid'
 
 class App extends Component {
-  render() {
+  render () {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
+      <BrowserRouter>
+        <Switch>
+          {routes.map((route, index) => {
+            return (
+              <Route exact={route.exact} key={uuid.v4()} path={route.path} render={() => {
+                return (
+                  <route.component />
+                )
+              }} />
+            )
+          })}
+        </Switch>
+      </BrowserRouter>
+    )
   }
 }
 
-export default App;
+export default App
