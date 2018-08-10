@@ -1,0 +1,30 @@
+.searchBar {
+  overflow: hidden;
+  background-color: #fff;
+}
+.searchBar :global .am-wingblank.am-wingblank-lg {
+  padding-left: .8rem;
+  position: relative;
+  height: .88rem;
+  line-height: .88rem;
+}
+.searchSide {
+  position: absolute;
+  left: 0;
+  top: 48%;
+  float: left;
+  width:.6rem;
+  height:.6rem;
+  padding-right:.2rem;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+}
+.searchForm {
+  background-color: #fff;
+}
+.searchForm :global .am-search-input {
+  background-color: #efeff4;
+  border-radius:.24rem;
+}
