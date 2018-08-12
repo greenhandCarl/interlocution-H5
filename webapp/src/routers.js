@@ -1,22 +1,16 @@
-import HomePage from './container/Homepage'
-import Questionlist from './container/Questionlist'
-import Questioninfo from './container/Questioninfo'
+import QuestionlistPage from './container/QuestionlistPage'
+import QuestioninfoPage from './container/QuestioninfoPage'
 
 const routers = [
   {
     path: '/',
     exact: true,
-    component: HomePage
-  },
-  {
-    path: '/questionlist',
-    exact: true,
-    component: Questionlist
+    component: QuestionlistPage
   },
   {
     path: '/questioninfo/:id',
     exact: true,
-    component: Questioninfo
+    component: QuestioninfoPage
   }
 ]
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import Questionlist from '../component/questionlist/Questionlist'
 
-class Questionlist extends Component {
+class QuestionlistPage extends Component {
   constructor (props) {
     super(props)
     this.state = {}
@@ -8,10 +9,10 @@ class Questionlist extends Component {
   render () {
     return (
       <div>
-        Questionlist
+        <Questionlist />
       </div>
     )
   }
 }
 
-export default Questionlist
+export default QuestionlistPage
