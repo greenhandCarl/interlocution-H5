@@ -1,6 +1,7 @@
 'use strict';
 
 const autoprefixer = require('autoprefixer');
+const pxtorem = require('postcss-pxtorem')
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -188,6 +189,10 @@ module.exports = {
                       ],
                       flexbox: 'no-2009',
                     }),
+                    pxtorem({
+                      rootValue: 50,
+                      propWhiteList: []
+                    })
                   ],
                 },
               },
@@ -221,6 +226,10 @@ module.exports = {
                       ],
                       flexbox: 'no-2009',
                     }),
+                    pxtorem({
+                      rootValue: 50,
+                      propWhiteList: []
+                    })
                   ],
                 },
               },

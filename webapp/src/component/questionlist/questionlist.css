@@ -28,3 +28,69 @@
   background-color: #efeff4;
   border-radius:.24rem;
 }
+.listItem {
+  padding:.30rem;
+  background-color: #fff;
+  margin-bottom: .2rem;
+  position:relative;
+}
+.tipContainer {
+  padding-top:.01rem;
+  padding-bottom:.01rem;
+  min-height:.16rem;
+  overflow: hidden;
+}
+.sortTip {
+  float:left;
+  width:.52rem;
+  height:.32rem;
+  font-size:.24rem;
+  line-height:.32rem;
+  text-align:center;
+  color:#fff;
+  border-radius:.04rem;
+  background:-webkit-linear-gradient(90deg, rgba(255, 178, 20, 0.801), rgba(255, 203, 34, 0.801));
+  background:-o-linear-gradient(90deg, rgba(255, 178, 20, 0.801), rgba(255, 203, 34, 0.801));
+  background:-moz-linear-gradient(90deg, rgba(255, 178, 20, 0.801), rgba(255, 203, 34, 0.801));
+  background:linear-gradient(90deg, rgba(255, 177, 20, 0.925), rgba(255, 203, 34, 0.705));
+}
+.tipUserInfo {
+  float:left;
+  margin-left:.20rem;
+  height:.32rem;
+  font-size:.24rem;
+  line-height:.32rem;
+  color:#cecece;
+}
+.content {
+  letter-spacing:.02rem;
+  line-height: 1.3;
+  margin-top: 0.08rem;
+  margin-bottom: 0.16rem;
+}
+.pageBody {
+  padding-left: .16rem;
+  padding-right: .16rem;
+  padding-top: .16rem;
+}
+.titleTime {
+  overflow: hidden;
+  font-size: .26rem;
+  padding-bottom:5px;
+  color:#cecece;
+  line-height:1em;
+  list-style:none;
+}
+.titleTime :global .createTime {
+  float:left;
+  padding-right:1em;
+  border-right: 1px solid #cecece;
+}
+.titleTime :global .extra {
+  float:left;
+  padding-left:1em;
+}
+.titleTime :global .goInfo {
+  float:right;
+  color:rgb(60,97,141);
+}
