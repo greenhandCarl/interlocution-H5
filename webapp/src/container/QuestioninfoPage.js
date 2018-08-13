@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Questioninfo from '../component/questioninfo/Questioninfo'
 
 class QuestioninfoPage extends Component {
   constructor (props) {
@@ -8,7 +9,7 @@ class QuestioninfoPage extends Component {
   render () {
     return (
       <div>
-        Questioninfo
+        <Questioninfo />
       </div>
     )
   }
