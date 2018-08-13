@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import { NavBar, Icon } from 'antd-mobile'
-import uuid from 'uuid'
+// import uuid from 'uuid'
 import styles from './questioninfo.css'
+import { deepClone } from '../../util/globalutils'
 
 class Questioninfo extends Component {
   constructor (props) {
@@ -20,7 +21,7 @@ class Questioninfo extends Component {
           editing: false,
           agreed: false,
           commentList: [],
-          agreeList: ['用户huangkai', '用户wangzhouyong']
+          agreeList: ['用户huangkai', '用户wangzhouyong', '用户huangkai', '用户wangzhouyong']
         },
         {
           username: '用户12139',
@@ -32,7 +33,7 @@ class Questioninfo extends Component {
           agreed: false,
           commentList: [
             { username1: '用户huangkai', username2: '', content: '我觉着你说的不对' },
-            { username1: '用户12138', username2: '用户huangkai', content: '先问是不是，在问为什么' },
+            { username1: '用户12138', username2: '用户huangkai', content: '先问是不是，再问为什么' },
             { username1: 'yonghuzj', username2: '', content: '楼上二位不要在争论了' }
           ],
           agreeList: ['用户huangkai', '用户wangzhouyong']
@@ -65,6 +66,16 @@ class Questioninfo extends Component {
   static propTypes = {
     history: PropTypes.object
   }
+  onComImgClick = (index) => {
+    const answerList = deepClone(this.state.answerList)
+    answerList[index].operateLeft = 0
+    this.setState({answerList})
+  }
+  onShadeClick = (index) => {
+    const answerList = deepClone(this.state.answerList)
+    answerList[index].operateLeft = 400
+    this.setState({answerList})
+  }
   render () {
     const { answerList } = this.state
     const answerCount = answerList.length || 0
@@ -87,7 +98,7 @@ class Questioninfo extends Component {
         <p className={styles.answerTitle}>回答列表</p>
         <div className={styles.answerList}>
           {answerList.map((answer, index) => (
-            <div className='answer-item' key={uuid.v4()}>
+            <div className='answer-item' key={index}>
               <div className='tip-container'>
                 <span className='tip-text'>
                   {answer.username}
@@ -97,29 +108,64 @@ class Questioninfo extends Component {
               <div className='extra-info'>
                 <span className='create-time'>{answer.createTime}</span>
                 <span className='other-info'>{answer.extra}</span>
-                <div className='operate-shade' />
+                <div className='operate-shade' onClick={() => { this.onShadeClick(index) }} style={{display: answer.operateLeft === 0 ? 'block' : 'none'}} />
                 <div className='operate-container'>
-                  <ul className='operate' style={{left: 0}}>
+                  <ul className='operate' style={{left: answer.operateLeft}}>
                     <li className='agree'>
-                      <img alt='' src={require('../../asset/heart2.png')} />
-                      赞
+                      <div className='center-box'>
+                        <img alt='' src={require('../../asset/heart2.png')} />
+                        赞
+                      </div>
                     </li>
                     <li className='comment'>
-                      <img alt='' src={require('../../asset/message.png')} />
-                      评论
+                      <div className='center-box'>
+                        <img alt='' src={require('../../asset/message.png')} />
+                        评论
+                      </div>
                     </li>
                   </ul>
                 </div>
-                <img alt='' />
+                <img alt='' onClick={() => { this.onComImgClick(index) }} className='comment-img' src={require('../../asset/comment.jpg')} />
               </div>
-              <div className='agree-list'>
-                {answer.agreeList.map((item, index) => (
-                  <span className='agree-item' key={index}>{item}</span>
-                ))}
+              <div className='comment-container' style={{marginTop: '.2rem'}}>
+                <div className='agree-list'>
+                  {answer.agreeList.length !== 0 && (
+                    <img alt='' src={require('../../asset/heart1.png')} />
+                  )}
+                  {answer.agreeList.map((item, index) => (
+                    <span className='agree-item' key={index}>{item}{index === answer.agreeList.length - 1 ? '' : <i>，</i>}</span>
+                  ))}
+                </div>
+                <div className='comment-list'>
+                  {answer.commentList.map((item, index) => (
+                    <div className='comment-item' key={index}>
+                      <span className='username'>{item.username1}</span>
+                      <span className={`${item.username2 ? 'nomal' : 'empty'}`}>
+                        {item.username2 && '回复'}
+                      </span>
+                      <span className='username'>{item.username2}</span>：
+                      <span className='content'>{item.content}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
         </div>
+        <footer className={styles.footer}>
+          <div className='to-home' onClick={() => { this.props.history.push('/') }}>
+            <div className='icon'>
+              <img alt='' src={require('../../asset/home.png')} />
+              <p>首页</p>
+            </div>
+          </div>
+          <div className='to-reply' onClick={() => { console.log('to reply') }}>
+            <div className='icon'>
+              <img alt='' src={require('../../asset/edit.png')} />
+              <p>回答</p>
+            </div>
+          </div>
+        </footer>
       </div>
     )
   }
