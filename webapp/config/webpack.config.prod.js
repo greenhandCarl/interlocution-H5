@@ -1,5 +1,6 @@
 'use strict';
 
+const pxtorem = require('postcss-pxtorem')
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -206,7 +207,7 @@ module.exports = {
                               'not ie < 9', // React doesn't support IE8 anyway
                             ],
                             flexbox: 'no-2009',
-                          }),
+                          })
                         ],
                       },
                     },
@@ -255,6 +256,10 @@ module.exports = {
                             ],
                             flexbox: 'no-2009',
                           }),
+                          pxtorem({
+                            rootValue: 50,
+                            propWhiteList: []
+                          })
                         ],
                       },
                     },

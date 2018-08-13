@@ -66,9 +66,9 @@
   letter-spacing:.02rem;
   line-height: 1.3;
   margin-top: 0.08rem;
-  margin-bottom: 0.16rem;
 }
 .pageBody {
+  position: relative;
   padding-left: .16rem;
   padding-right: .16rem;
   padding-top: .16rem;
@@ -85,12 +85,32 @@
   float:left;
   padding-right:1em;
   border-right: 1px solid #cecece;
+  padding-top: .16rem;
 }
 .titleTime :global .extra {
   float:left;
   padding-left:1em;
+  padding-top: .16rem;
 }
 .titleTime :global .goInfo {
+  padding-top: .16rem;
   float:right;
   color:rgb(60,97,141);
+}
+.myDrawer {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.myDrawer :global .am-drawer-sidebar {
+  background-color: #fff;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.myDrawer :global .am-drawer-sidebar .am-list {
+  width: 300px;
+  padding: 0;
+}
+.myDrawer :global .bar-item {
+  padding: .2rem 0;
+  color:rgba(64,64,64,0.825);
 }
