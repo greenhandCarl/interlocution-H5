@@ -10,6 +10,9 @@ class Questioninfo extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      fakerInputV: '',
+      inputShow: false,
+      placeholder: '',
       questionInfo: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道?',
       answerList: [
         {
@@ -66,6 +69,9 @@ class Questioninfo extends Component {
   static propTypes = {
     history: PropTypes.object
   }
+  componentDidMount () {
+    window.scrollTo(0, 0)
+  }
   onComImgClick = (index) => {
     const answerList = deepClone(this.state.answerList)
     answerList[index].operateLeft = 0
@@ -75,6 +81,69 @@ class Questioninfo extends Component {
     const answerList = deepClone(this.state.answerList)
     answerList[index].operateLeft = 400
     this.setState({answerList})
+  }
+  // 点赞功能
+  onAgree = (index) => {
+    const answerList = deepClone(this.state.answerList)
+    answerList[index].operateLeft = 400
+    if (answerList[index].agreed) {
+      answerList[index].agreed = false
+      answerList[index].agreeList = answerList[index].agreeList.filter(item => item !== '凯凯')
+    } else {
+      answerList[index].agreed = true
+      answerList[index].agreeList.push('凯凯')
+    }
+    this.setState({answerList})
+  }
+  // 评论功能
+  onComment = (index) => {
+    const answerList = deepClone(this.state.answerList)
+    answerList[index].operateLeft = 400
+    answerList[index].editing = true
+    this.setState({
+      inputShow: true,
+      answerList,
+      placeholder: `评论${answerList[index].username}`
+    })
+  }
+  handleBlur = () => {
+    this.setState({inputShow: false})
+  }
+  // 提交功能
+  handleSubmit = (e) => {
+    const answerList = deepClone(this.state.answerList)
+    // 回复和评论的对象不同 begin
+    let username2
+    if (this.state.placeholder.indexOf('评论') !== -1) {
+      username2 = answerList.find(item => item.editing).username
+    }
+    if (this.state.placeholder.indexOf('回复') !== -1) {
+      username2 = this.state.placeholder.replace('回复', '')
+    }
+    // end
+    const v = this.state.fakerInputV
+    const commentItem = { username1: '凯凯', username2, content: v }
+    answerList.find(item => item.editing).commentList.push(commentItem)
+    answerList.find(item => item.editing).editing = false
+    this.setState({
+      inputShow: false,
+      answerList,
+      fakerInputV: ''
+    })
+  }
+  handleChange = (e) => {
+    this.setState({fakerInputV: e.target.value})
+  }
+  // 回复功能
+  onComItemClick = (v, index) => {
+    if (v.username1 === '凯凯') { return }
+    const answerList = deepClone(this.state.answerList)
+    answerList[index].editing = true
+    this.setState({
+      inputShow: true,
+      placeholder: `回复${v.username1}`,
+      answerList
+    })
   }
   render () {
     const { answerList } = this.state
@@ -111,13 +180,13 @@ class Questioninfo extends Component {
                 <div className='operate-shade' onClick={() => { this.onShadeClick(index) }} style={{display: answer.operateLeft === 0 ? 'block' : 'none'}} />
                 <div className='operate-container'>
                   <ul className='operate' style={{left: answer.operateLeft}}>
-                    <li className='agree'>
-                      <div className='center-box'>
+                    <li className='agree' onClick={() => { this.onAgree(index) }}>
+                      <div className='center-box' style={{width: answer.agreed ? '2em' : '1em'}}>
                         <img alt='' src={require('../../asset/heart2.png')} />
-                        赞
+                        {answer.agreed ? '取消' : '赞'}
                       </div>
                     </li>
-                    <li className='comment'>
+                    <li className='comment' onClick={() => { this.onComment(index) }}>
                       <div className='center-box'>
                         <img alt='' src={require('../../asset/message.png')} />
                         评论
@@ -128,7 +197,7 @@ class Questioninfo extends Component {
                 <img alt='' onClick={() => { this.onComImgClick(index) }} className='comment-img' src={require('../../asset/comment.jpg')} />
               </div>
               <div className='comment-container' style={{marginTop: '.2rem'}}>
-                <div className='agree-list'>
+                <div className='agree-list' style={{borderBottom: answer.agreeList.length !== 0 ? '1px solid #e1e2e3' : 'none'}}>
                   {answer.agreeList.length !== 0 && (
                     <img alt='' src={require('../../asset/heart1.png')} />
                   )}
@@ -137,14 +206,14 @@ class Questioninfo extends Component {
                   ))}
                 </div>
                 <div className='comment-list'>
-                  {answer.commentList.map((item, index) => (
-                    <div className='comment-item' key={index}>
-                      <span className='username'>{item.username1}</span>
-                      <span className={`${item.username2 ? 'nomal' : 'empty'}`}>
-                        {item.username2 && '回复'}
+                  {answer.commentList.map((v, i) => (
+                    <div className='comment-item' onClick={() => { this.onComItemClick(v, index) }} key={i}>
+                      <span className='username'>{v.username1}</span>
+                      <span className={`${v.username2 ? 'nomal' : 'empty'}`}>
+                        {v.username2 && '回复'}
                       </span>
-                      <span className='username'>{item.username2}</span>：
-                      <span className='content'>{item.content}</span>
+                      <span className='username'>{v.username2}</span>：
+                      <span className='content'>{v.content}</span>
                     </div>
                   ))}
                 </div>
@@ -159,13 +228,21 @@ class Questioninfo extends Component {
               <p>首页</p>
             </div>
           </div>
-          <div className='to-reply' onClick={() => { console.log('to reply') }}>
+          <div className='to-reply' onClick={() => { this.props.history.push('/answer') }}>
             <div className='icon'>
               <img alt='' src={require('../../asset/edit.png')} />
               <p>回答</p>
             </div>
           </div>
         </footer>
+        {this.state.inputShow && (
+          <div className={styles.keyboardInput}>
+            <form action='#' onSubmit={this.handleSubmit}>
+              <input className='faker-input' value={this.state.fakerInputV} onChange={this.handleChange} onBlur={this.handleBlur} autoFocus={Boolean(true)} placeholder={this.state.placeholder} />
+            </form>
+            <img alt='' className='smile' src={require('../../asset/smile.png')} />
+          </div>
+        )}
       </div>
     )
   }

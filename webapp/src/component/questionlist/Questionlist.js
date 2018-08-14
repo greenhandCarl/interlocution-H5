@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import uuid from 'uuid'
-import { NavBar, Icon, WingBlank, SearchBar, Drawer } from 'antd-mobile'
-import { withRouter } from 'react-router-dom'
+import { NavBar, WingBlank, SearchBar, Drawer } from 'antd-mobile'
+import { withRouter, Link } from 'react-router-dom'
 import styles from './questionlist.css'
 
 class Questionlist extends Component {
@@ -100,6 +100,9 @@ class Questionlist extends Component {
   static propTypes = {
     history: PropTypes.object
   }
+  componentDidMount () {
+    window.scrollTo(0, 0)
+  }
   componentWillMount () {
     const { originData } = this.state
     this.setState({
@@ -130,11 +133,6 @@ class Questionlist extends Component {
       <div>
         <NavBar
           mode='light'
-          icon={<Icon type='left' color='#000' />}
-          onLeftClick={() => { console.log(1) }}
-          rightContent={[
-            <Icon key='0' type='ellipsis' color='#000' />
-          ]}
         >
           提问列表
         </NavBar>
@@ -160,11 +158,11 @@ class Questionlist extends Component {
                 <span className={styles.sortTip}>{index + 1 > 9 ? index + 1 : `0${index + 1}` }</span>
                 <span className={styles.tipUserInfo}>{ListItem.userName}</span>
               </div>
-              <div className={styles.content}>{ListItem.content}</div>
+              <div className={styles.content} onClick={() => { this.goInfo(ListItem.id) }}>{ListItem.content}</div>
               <div className={styles.titleTime}>
                 <span className='createTime'>{ListItem.createTime}</span>
                 <span className='extra'>{ListItem.extra}</span>
-                <span className='goInfo' onClick={() => { this.goInfo(ListItem.id) }}>查看{ListItem.awswerNum}个回答</span>
+                <Link to={`/questioninfo/${ListItem.id}`}><span className='goInfo'>查看{ListItem.awswerNum}个回答</span></Link>
               </div>
             </div>
           ))}
