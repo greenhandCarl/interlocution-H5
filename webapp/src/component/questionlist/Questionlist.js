@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import uuid from 'uuid'
-import { NavBar, WingBlank, SearchBar, Drawer } from 'antd-mobile'
-import { withRouter, Link } from 'react-router-dom'
+import { NavBar, WingBlank, SearchBar, Drawer, Toast } from 'antd-mobile'
+import { withRouter } from 'react-router-dom'
 import styles from './questionlist.css'
 
 class Questionlist extends Component {
@@ -115,14 +115,18 @@ class Questionlist extends Component {
   onOpenChange = (key) => {
     if (typeof key === 'string') {
       const { originData } = this.state
-      this.setState({
-        questionList: originData.filter(item => item.category.join('').indexOf(key) !== -1)
+      Toast.loading('Loading', 1.5, () => {
+        this.setState({
+          questionList: originData.filter(item => item.category.join('').indexOf(key) !== -1)
+        })
       })
     }
     this.setState({ open: !this.state.open })
   }
   goInfo = (id) => {
-    this.props.history.push(`/questioninfo/${id}`)
+    Toast.loading('Loading...', 1, () => {
+      this.props.history.push(`/questioninfo/${id}`)
+    })
   }
   render () {
     let { questionList, sidebar } = this.state
@@ -161,8 +165,7 @@ class Questionlist extends Component {
               <div className={styles.content} onClick={() => { this.goInfo(ListItem.id) }}>{ListItem.content}</div>
               <div className={styles.titleTime}>
                 <span className='createTime'>{ListItem.createTime}</span>
-                <span className='extra'>{ListItem.extra}</span>
-                <Link to={`/questioninfo/${ListItem.id}`}><span className='goInfo'>查看{ListItem.awswerNum}个回答</span></Link>
+                <span onClick={() => { this.goInfo(ListItem.id) }} className='extra'>{ListItem.extra}</span><span className='goInfo'>查看{ListItem.awswerNum}个回答</span>
               </div>
             </div>
           ))}

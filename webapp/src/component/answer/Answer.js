@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { NavBar, Icon, TextareaItem, Button } from 'antd-mobile'
+import { NavBar, Icon, TextareaItem, Button, Toast } from 'antd-mobile'
 import { withRouter } from 'react-router-dom'
 import { createForm } from 'rc-form'
 import styles from './answer.css'
@@ -23,8 +23,18 @@ class Answer extends Component {
   onClearAns = () => {
     this.setState({textareaValue: ''})
   }
-  onPostAns = () => {
-    this.setState({textareaValue: ''})
+  postAnsProm = () => {
+    new Promise((resolve, reject) => {
+      Toast.loading('Loading', 1.5, () => { resolve() })
+    }).then(() => {
+      this.onPostAns()
+    })
+  }
+  onPostAns = async () => {
+    await this.setState({textareaValue: ''})
+    await Toast.success('提交成功', 1, () => {
+      this.props.history.goBack()
+    })
   }
   render () {
     const { getFieldProps } = this.props.form
@@ -57,7 +67,7 @@ class Answer extends Component {
           </div>
         </div>
         <div className={styles.btnContainer}>
-          <Button onClick={this.onPostAns} className='post-answer' type='primary'>提交回答</Button>
+          <Button onClick={this.postAnsProm} className='post-answer' type='primary'>提交回答</Button>
           <Button onClick={this.onClearAns} className='clear-answer' type='ghost'>清空回答</Button>
         </div>
       </div>

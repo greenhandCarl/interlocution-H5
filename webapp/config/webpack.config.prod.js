@@ -1,6 +1,6 @@
 'use strict';
 
-const pxtorem = require('postcss-pxtorem')
+const pxtorem = require('postcss-pxtorem');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -178,8 +178,6 @@ module.exports = {
                     loader: require.resolve('style-loader'),
                     options: {
                       hmr: false,
-                      modules: true,
-                      localIdentName: '[local]-[hash:base64:5]'
                     },
                   },
                   use: [
@@ -189,6 +187,8 @@ module.exports = {
                         importLoaders: 1,
                         minimize: true,
                         sourceMap: shouldUseSourceMap,
+                        modules: true,
+                        localIdentName: '[local]-[hash:base64:5]'
                       },
                     },
                     {
