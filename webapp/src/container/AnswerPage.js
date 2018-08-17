@@ -5,6 +5,7 @@ class AnswerPage extends Component {
   constructor (props) {
     super(props)
     this.state = {}
+    //初始化
   }
   render () {
     return (
